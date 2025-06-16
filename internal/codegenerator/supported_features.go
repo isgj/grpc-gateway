@@ -7,7 +7,7 @@ import (
 
 func supportedCodeGeneratorFeatures() uint64 {
 	// Enable support for optional keyword in proto3.
-	return uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
+	return uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL) | uint64(pluginpb.CodeGeneratorResponse_FEATURE_SUPPORTS_EDITIONS)
 }
 
 // SetSupportedFeaturesOnPluginGen sets supported proto3 features

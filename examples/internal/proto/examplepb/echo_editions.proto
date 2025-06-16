@@ -1,0 +1,20 @@
+edition = "2023";
+
+package examplepb;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/examplepb";
+
+message EditionsStringMessage {
+  string value = 1;
+}
+
+service EditionsEchoService {
+  rpc Echo(EditionsStringMessage) returns (EditionsStringMessage) {
+    option (google.api.http) = {
+      post: "/v1/example/editions/echo"
+      body: "*"
+    };
+  }
+}

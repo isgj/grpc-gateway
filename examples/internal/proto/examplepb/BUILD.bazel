@@ -52,6 +52,7 @@ proto_library(
     name = "examplepb_proto",
     srcs = [
         "a_bit_of_everything.proto",
+        "echo_editions.proto",
         "echo_service.proto",
         "enum_with_single_value.proto",
         "excess_body.proto",
