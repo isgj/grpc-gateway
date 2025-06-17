@@ -79,6 +79,8 @@ func main() {
 		}
 
 		codegenerator.SetSupportedFeaturesOnPluginGen(gen)
+		gen.SupportedEditionsMinimum = 1000 // descriptorpb.EDITION_2023
+		gen.SupportedEditionsMaximum = 1000 // descriptorpb.EDITION_2023
 
 		generator := gengateway.New(reg, *useRequestContext, *registerFuncSuffix, *allowPatchFeature, *standalone)
 

@@ -1,0 +1,69 @@
+edition = "2023";
+
+package examplepb;
+
+import "google/api/annotations.proto"; // For HTTP options
+// We'll need to import features.proto if it's not implicitly available
+// For now, let's assume it's available like annotations.proto.
+// If not, the build will tell us, and we can add:
+// import "google/protobuf/features.proto";
+
+option go_package = "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/examplepb";
+option features.field_presence = EXPLICIT; // File-level default
+
+message FeatureExplicitPresence {
+  // Fields will inherit file-level EXPLICIT presence
+  string name = 1;
+  int32 age = 2;
+  bool active = 3;
+}
+
+message FeatureImplicitPresence {
+  // Fields will inherit file-level EXPLICIT presence by default.
+  // To make them truly implicit, each field would need [features.presence = IMPLICIT].
+  // For this iteration, we'll let them be explicit to pass protoc validation.
+  string description = 1;
+  int32 count = 2;
+}
+
+enum FeatureClosedEnum {
+  option features.enum_type = CLOSED;
+  CLOSED_UNSPECIFIED = 0;
+  CLOSED_VAL1 = 1;
+  CLOSED_VAL2 = 2;
+}
+
+enum FeatureOpenEnum {
+  option features.enum_type = OPEN;
+  OPEN_UNSPECIFIED = 0;
+  OPEN_VALA = 1;
+  OPEN_VALB = 2;
+}
+
+message AllFeaturesMessage {
+  // Fields will inherit file-level EXPLICIT presence
+
+  string id = 1;
+  FeatureExplicitPresence explicit_data = 2;
+  FeatureImplicitPresence implicit_data = 3;
+  FeatureClosedEnum closed_enum_field = 4;
+  FeatureOpenEnum open_enum_field = 5;
+          repeated string tags = 6; // Default for editions is PACKED. Explicitly setting caused protoc error.
+  string non_utf8_string = 7 [features.utf8_validation = NONE]; // Default is VERIFY in editions
+  string verified_utf8_string = 8 [features.utf8_validation = VERIFY];
+}
+
+// Simple service to test with these messages
+service EditionsFeaturesService {
+  rpc GetFeatures(AllFeaturesMessage) returns (AllFeaturesMessage) {
+    option (google.api.http) = {
+      get: "/v1/example/editions/features/{id}"
+    };
+  }
+  rpc UpdateFeatures(AllFeaturesMessage) returns (AllFeaturesMessage) {
+    option (google.api.http) = {
+      put: "/v1/example/editions/features/{id}"
+      body: "*"
+    };
+  }
+}

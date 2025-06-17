@@ -56,6 +56,7 @@ proto_library(
         "echo_service.proto",
         "enum_with_single_value.proto",
         "excess_body.proto",
+        "features_editions.proto",
         "flow_combination.proto",
         "generate_unbound_methods.proto",
         "generated_output.proto",

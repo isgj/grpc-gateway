@@ -247,6 +247,13 @@ func emitFiles(out []*descriptor.ResponseFile) {
 	}
 	resp := &pluginpb.CodeGeneratorResponse{File: files}
 	codegenerator.SetSupportedFeaturesOnCodeGeneratorResponse(resp)
+	// Attempting to set editions support range again.
+	// If this causes a compile error in the next build step,
+	// it means these fields are truly not on this version of pluginpb.CodeGeneratorResponse.
+	minEdition := uint32(1000) // Represents descriptorpb.EDITION_2023
+	maxEdition := uint32(1000) // Represents descriptorpb.EDITION_2023
+	resp.SupportedEditionsMinimum = &minEdition
+	resp.SupportedEditionsMaximum = &maxEdition
 	emitResp(resp)
 }
 
