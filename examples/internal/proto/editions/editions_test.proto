@@ -1,0 +1,49 @@
+edition = "2023";
+
+package grpc.gateway.examples.internal.proto.editions;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/editions";
+
+option features.field_presence = EXPLICIT;
+
+message EditionFeaturesMessage {
+  string optional_string = 1;
+  int32 optional_int32 = 2;
+  bool optional_bool = 3;
+  string required_string = 4 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Any opaque_any = 5;
+}
+
+message SimpleMessageForOpaque {
+  string data = 1;
+}
+
+message EditionsTestRequest {
+  EditionFeaturesMessage features_message = 1;
+  SimpleMessageForOpaque simple_opaque_message = 2;
+}
+
+message EditionsTestResponse {
+  string server_received_optional_string = 1;
+  bool was_optional_string_present = 2;
+  int32 server_received_optional_int32 = 3;
+  bool was_optional_int32_present = 4;
+  bool server_received_optional_bool = 5;
+  bool was_optional_bool_present = 6;
+  string server_received_required_string = 7;
+  string any_type_url_received = 8;
+  string simple_opaque_data_received = 9;
+}
+
+service EditionsTestService {
+  rpc TestFieldPresence(EditionsTestRequest) returns (EditionsTestResponse) {
+    option (google.api.http) = {
+      post: "/v1/editions/test_field_presence"
+      body: "*"
+    };
+  }
+}

@@ -79,6 +79,8 @@ func main() {
 		}
 
 		codegenerator.SetSupportedFeaturesOnPluginGen(gen)
+		// protogen lib should handle setting min/max edition in the response
+		// if protoc provides it and FEATURE_SUPPORTS_EDITIONS is set by the call above.
 
 		generator := gengateway.New(reg, *useRequestContext, *registerFuncSuffix, *allowPatchFeature, *standalone)
 

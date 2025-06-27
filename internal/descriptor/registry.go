@@ -286,6 +286,21 @@ func (r *Registry) loadFile(filePath string, file *protogen.File) {
 		FileDescriptorProto:     file.Proto,
 		GoPkg:                   pkg,
 		GeneratedFilenamePrefix: file.GeneratedFilenamePrefix,
+		Edition:                 file.Proto.GetEdition(), // Attempt direct access
+	}
+
+	if f.Edition == descriptorpb.Edition_EDITION_UNKNOWN {
+		// If edition is not explicitly set (e.g., truly not present in .proto or GetEdition() is not available on the resolved FileDescriptorProto type),
+		// infer from syntax. This is a fallback.
+		switch file.Proto.GetSyntax() {
+		case "proto2":
+			f.Edition = descriptorpb.Edition_EDITION_PROTO2
+		case "proto3":
+			f.Edition = descriptorpb.Edition_EDITION_PROTO3
+		default:
+			// Stick with UNKNOWN if syntax is also missing or unexpected
+			f.Edition = descriptorpb.Edition_EDITION_UNKNOWN
+		}
 	}
 
 	r.files[filePath] = f

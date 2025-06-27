@@ -638,6 +638,10 @@ But patches are welcome.
 - Encoding request/response body in XML.
 - True bi-directional streaming.
 
+## Protobuf Editions (Experimental)
+
+Work is in progress to add support for Protobuf Editions, starting with Edition 2023. Full support, particularly for `protoc-gen-grpc-gateway`, is dependent on resolving build and tooling aspects related to plugin edition capabilities.
+
 ## Mapping gRPC to HTTP
 
 - [How gRPC error codes map to HTTP status codes in the response](https://github.com/grpc-ecosystem/grpc-gateway/blob/main/runtime/errors.go#L15).

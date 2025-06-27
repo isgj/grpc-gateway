@@ -1,0 +1,39 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@rules_go//proto:def.bzl", "go_proto_library")
+load("//:defs.bzl", "grpc_gateway_go_library", "openapiv2_go_proto_library")
+
+proto_library(
+    name = "editions_proto",
+    srcs = ["editions_test.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_googleapis//google/api:annotations_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
+)
+
+go_proto_library(
+    name = "editions_go_proto",
+    compilers = [
+        "@io_bazel_rules_go//proto:go_grpc",
+    ],
+    importpath = "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/editions",
+    proto = ":editions_proto",
+    visibility = ["//visibility:public"],
+)
+
+grpc_gateway_go_library(
+    name = "editions_go_gw",
+    importpath = "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/editions",
+    proto = ":editions_proto",
+    visibility = ["//visibility:public"],
+    deps = [":editions_go_proto"],
+)
+
+openapiv2_go_proto_library(
+    name = "editions_go_openapiv2",
+    importpath = "github.com/grpc-ecosystem/grpc-gateway/v2/examples/internal/proto/editions",
+    proto = ":editions_proto",
+    visibility = ["//visibility:public"],
+    deps = [":editions_proto"],
+)

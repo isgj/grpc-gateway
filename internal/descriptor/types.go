@@ -63,6 +63,8 @@ type File struct {
 	Enums []*Enum
 	// Services is the list of services defined in this file.
 	Services []*Service
+	// Edition is the edition of the proto file.
+	Edition descriptorpb.Edition
 }
 
 // Pkg returns package name or alias if it's present
